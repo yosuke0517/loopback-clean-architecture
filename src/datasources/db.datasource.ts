@@ -1,15 +1,17 @@
 import {inject, lifeCycleObserver, LifeCycleObserver} from '@loopback/core';
 import {juggler} from '@loopback/repository';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 const config = {
   name: 'db',
   connector: 'mysql',
   url: '',
-  host: 'localhost',
-  port: 3306,
-  user: 'root',
-  password: 'password',
-  database: 'demo'
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME
 };
 
 // Observe application's life cycle to disconnect the datasource when
@@ -24,7 +26,7 @@ export class DbDataSource extends juggler.DataSource
 
   constructor(
     @inject('datasources.config.db', {optional: true})
-    dsConfig: object = config,
+      dsConfig: object = config,
   ) {
     super(dsConfig);
   }
